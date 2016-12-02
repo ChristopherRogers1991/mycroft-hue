@@ -21,9 +21,9 @@ default_group = 0  # Integer id or string name of group. Group 0 = All lights
 ip = ""
 username = ""
 ```
-If you know the ip address, or have a user that you would like to use, you may add either or both on the
-relevant lines above. Otherwise, the skill will attempt to find the hub on your network (if you have multiple,
-it will take the first one it finds), and will create a user.
+If you know the ip address of your hub, or have a user that you would like to use, you may add either or both
+on the relevant lines above. Otherwise, the skill will attempt to find the hub on your network (if you have
+multiple, it will take the first one it finds), and will create a user.
 
 On your first run, if you did not supply a username, when you say any phrase that gets routed to this
 skill (e.e. "turn off my lights"), you will be asked to push the button on the top of your Phillips Hue hub.
