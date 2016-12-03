@@ -9,7 +9,7 @@ A Mycroft skill for controlling Phillips Hue lights
   * `cd ~/.mycroft/third_party_skills/mycroft-hue`
 3. If your mycroft instance runs in a virtual environment, activate it
   * `source ~/.virtualenvs/mycroft/bin/activate`
-4. Install the require python libraries
+4. Install the required python libraries
   * `pip install -r requirements.txt`
 5. Add the block below to your mycoft.ini file (`~/.mycroft/mycroft.ini`)
 ```
