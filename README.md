@@ -3,23 +3,38 @@ A Mycroft skill for controlling Phillips Hue lights
 
 ## Setup
 
-1. Clone this repo into your third party skills folder
-  * `cd ~/.mycroft/third_party_skills && git clone https://github.com/ChristopherRogers1991/mycroft-hue.git`
+1. Clone this repo into your third party skills folder (the current default is ~/.mycroft/skills, but it used to be ~/.mycroft/third_party_skills; check your global/local mycroft.conf files if you have issues)
+  * `cd ~/.mycroft/skills && git clone https://github.com/ChristopherRogers1991/mycroft-hue.git`
 2. `cd` into the resulting `mycroft-hue` directory
-  * `cd ~/.mycroft/third_party_skills/mycroft-hue`
+  * `cd ~/.mycroft/skills/mycroft-hue`
 3. If your mycroft instance runs in a virtual environment, activate it
   * `source ~/.virtualenvs/mycroft/bin/activate`
 4. Install the required python libraries
   * `pip install -r requirements.txt`
-5. Add the block below to your mycoft.ini file (`~/.mycroft/mycroft.ini`)
+5. Add the block below to your mycoft.conf file (`~/.mycroft/mycroft.conf`)
 ```
-[PhillipsHueSkill]
-verbose = False  # True if you want mycroft to acknowledge succesful actions
-brightness_step = 50  # Brightness ranges from 0-254
-color_temperature_step = 1000  # degrees Kelvin. Ranges from 2000-6500
-default_group = 0  # Integer id or string name of group. Group 0 = All lights
-ip = ""
-username = ""
+  "PhillipsHueSkill": {
+    "ip": "",
+    "username": "",
+    "verbose": false,
+    "brightness_step": 50,
+    "color_temperature_step": 1000,
+    "default_group": 0
+  }
+```
+
+If that file did not already exist (this is the first third party skill you have added), wrap that entire block in { }. The finished file should be valid json. If you have issues, use http://jsonlint.com/ to validate the json.
+
+If you are using an older version of Mycroft which still uses ini files, you may use the block below:
+
+```
+    [PhillipsHueSkill]
+    verbose = False  # True if you want mycroft to acknowledge succesful actions
+    brightness_step = 50  # Brightness ranges from 0-254
+    color_temperature_step = 1000  # degrees Kelvin. Ranges from 2000-6500
+    default_group = 0  # Integer id or string name of group. Group 0 = All lights
+    ip = ""
+    username = ""
 ```
 If you know the ip address of your hub, or have a user that you would like to use, you may add either or both
 on the relevant lines above. Otherwise, the skill will attempt to find the hub on your network (if you have

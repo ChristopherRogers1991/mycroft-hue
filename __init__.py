@@ -94,8 +94,7 @@ class PhillipsHueSkill(MycroftSkill):
         self.brightness_step = int(self.config.get('brightness_step'))
         self.color_temperature_step = \
             int(self.config.get('color_temperature_step'))
-        self.verbose = True if self.config.get('verbose')\
-                                   .lower() == 'true' else False
+        self.verbose = self.config.get('verbose', False)
         self.username = self.config.get('username')
         if self.username == '':
             self.username = None
