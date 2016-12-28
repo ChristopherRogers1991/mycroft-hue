@@ -62,11 +62,11 @@ def intent_handler(handler_function):
 
     """
     def handler(self, message):
-        if message.message_type == 'ConnectLightsIntent' \
+        if message.type == 'ConnectLightsIntent' \
                 or self.connected or self._connect_to_bridge():
             group = self.default_group
-            if "Group" in message.metadata:
-                name = message.metadata["Group"].lower()
+            if "Group" in message.data:
+                name = message.data["Group"].lower()
                 group_id = self.groups_to_ids_map[name]
                 group = Group(self.bridge, group_id)
             try:
@@ -345,7 +345,7 @@ class PhillipsHueSkill(MycroftSkill):
 
     @intent_handler
     def handle_toggle_intent(self, message, group):
-        if "OffKeyword" in message.metadata:
+        if "OffKeyword" in message.data:
             dialog = 'turn.off'
             group.on = False
         else:
@@ -356,7 +356,7 @@ class PhillipsHueSkill(MycroftSkill):
 
     @intent_handler
     def handle_activate_scene_intent(self, message, group):
-        scene_name = message.metadata['Scene'].lower()
+        scene_name = message.data['Scene'].lower()
         scene_id = self.scenes_to_ids_map[scene_name]
         if scene_id:
             if self.verbose:
@@ -369,7 +369,7 @@ class PhillipsHueSkill(MycroftSkill):
 
     @intent_handler
     def handle_adjust_brightness_intent(self, message, group):
-        if "IncreaseKeyword" in message.metadata:
+        if "IncreaseKeyword" in message.data:
             brightness = group.brightness + self.brightness_step
             group.brightness = \
                 brightness if brightness < 255 else 254
@@ -383,7 +383,7 @@ class PhillipsHueSkill(MycroftSkill):
 
     @intent_handler
     def handle_set_brightness_intent(self, message, group):
-        value = int(message.metadata['Value'].rstrip('%'))
+        value = int(message.data['Value'].rstrip('%'))
         brightness = int(value / 100.0 * 254)
         group.brightness = brightness
         group.on = True
@@ -392,7 +392,7 @@ class PhillipsHueSkill(MycroftSkill):
 
     @intent_handler
     def handle_adjust_color_temperature_intent(self, message, group):
-        if "IncreaseKeyword" in message.metadata:
+        if "IncreaseKeyword" in message.data:
             color_temperature = \
                 group.colortemp_k + self.color_temperature_step
             group.colortemp_k = \
