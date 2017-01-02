@@ -25,17 +25,6 @@ A Mycroft skill for controlling Phillips Hue lights
 
 If that file did not already exist (this is the first third party skill you have added), wrap that entire block in { }. The finished file should be valid json. If you have issues, use http://jsonlint.com/ to validate the json.
 
-If you are using an older version of Mycroft which still uses ini files, you may use the block below:
-
-```
-    [PhillipsHueSkill]
-    verbose = False  # True if you want mycroft to acknowledge succesful actions
-    brightness_step = 50  # Brightness ranges from 0-254
-    color_temperature_step = 1000  # degrees Kelvin. Ranges from 2000-6500
-    default_group = 0  # Integer id or string name of group. Group 0 = All lights
-    ip = ""
-    username = ""
-```
 If you know the ip address of your hub, or have a user that you would like to use, you may add either or both
 on the relevant lines above. Otherwise, the skill will attempt to find the hub on your network (if you have
 multiple, it will take the first one it finds), and will create a user.
