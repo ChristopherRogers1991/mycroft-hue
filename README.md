@@ -1,6 +1,9 @@
 # mycroft-hue
 A Mycroft skill for controlling Phillips Hue lights
 
+## Short Demo
+https://youtu.be/IQ58dPp8f3M
+
 ## Setup
 
 1. Clone this repo into your third party skills folder (the current default is ~/.mycroft/skills, but it used to be ~/.mycroft/third_party_skills; check your global/local mycroft.conf files if you have issues)
