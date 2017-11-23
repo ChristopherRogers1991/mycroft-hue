@@ -66,7 +66,8 @@ def intent_handler(handler_function):
                 or self.connected or self._connect_to_bridge():
             group = self.default_group
             if "Group" in message.data:
-                name = message.data["Group"].lower()
+                name = message.data.get("Group") or self.most_recent_group
+                name = name.lower()
                 group_id = self.groups_to_ids_map[name]
                 group = Group(self.bridge, group_id)
             try:
@@ -84,6 +85,9 @@ def intent_handler(handler_function):
                             self.handle_intent(message)
                 else:
                     raise
+
+        self._update_context(message)
+
     return handler
 
 
@@ -101,6 +105,7 @@ class PhillipsHueSkill(MycroftSkill):
         self.ip = None  # set in _connect_to_bridge
         self.bridge = None
         self.default_group = None
+        self.most_recent_group = None
         self.groups_to_ids_map = dict()
         self.scenes_to_ids_map = dict()
 
@@ -274,6 +279,27 @@ class PhillipsHueSkill(MycroftSkill):
             name = scene['name'].lower()
             self.scenes_to_ids_map[name] = id
             self.register_vocabulary(name, "Scene")
+
+    def _update_context(self, message):
+        """
+        Update the context to allow for conversational interaction,
+        e.g.
+        "Turn on my lamp"
+        "Set it to reading"
+
+        Parameters
+        ----------
+        message : mycroft-core.messagebus.message.Message
+
+        """
+        data = message.data
+        if "LightsKeyword" in data:
+            self.set_context("LightsKeyword",
+                             data["LightsKeyword"] or "Lights")
+        elif "Group" in message.data:
+            self.most_recent_group =\
+                message.data.get("Group") or self.most_recent_group
+            self.set_context("Group", self.most_recent_group)
 
     def initialize(self):
         """
