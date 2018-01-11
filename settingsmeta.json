@@ -4,11 +4,11 @@
     "skillMetadata": {
         "sections": [
             {
-                "name": "Basic Settings",
+                "name": "Settings",
                 "fields": [
                     {
                         "type": "label",
-                        "text": "If you'd like Mycroft to give a verbal confirmation after you give him a command related to your Philip's Hue lights, set 'Verbose' to 'true'"
+                        "label": "<u>Verbose</u><p>If you'd like Mycroft to give a verbal confirmation after you give him a command related to your Philip's Hue lights, set 'Verbose' to 'true'</p><u>Brightness Step</u><p>Hue lights have a brightness range of 1-254. The Brightness Step determines how much Mycroft should turn the lights up or down when you ask him to adjust the brightness of your lights.</p><u>Color Temperature Step</u><p>The Color Temperature Step is similar to the Brightness Step, except that is controls how much of an adjustment Mycroft will make to the color temperature of your lights (redness vs white/blueness). The complete range of color temperatures is from 2000 to 6500 (measured in degrees Kelvin).</p><u>Default Group</u><p>Mycroft supports Hue groups, allowing you to request that he adjust a particular set of lights (e.g. those in your kitchen or bedroom), without changing any other lights. This value determines which group Mycroft will act on by default, when you do not specify a group in your command. The default, 0, is all of your lights.</p><u>Hub IP Address</u><p>This field is optional. If it is left blank, Mycroft should automatically discover the Phillips Hue hub on your network. If he has any trouble locating the bridge, however, you can enter the IP address of your hub here.</p><u>Username</u><p>This field is optional, and generally doesn't need to be set. Whenever you connect a new application to your Hue hub (i.e. whenever you're instructed to push the button on top of the hub), a unique 'username' (random string of letters/numbers) is generated for that app. The app then uses that value to identify itself going forward. Mycroft is no different, and will ask you to press the button on the bridge on first setup, and should work just fine from then on. If you're a developer, however, and are frequently flashing your Mycroft device with new images, you may get sick of having to register with the bridge over and over. In that case, you may enter a username here. You can use the value Mycroft generates on your first setup (should be found in <i>~mycroft/.mycroft/skills/PhillipsHueSkill/username</i>), or you can generate your own by following the <a href=https://www.developers.meethue.com/documentation/getting-started>meethue developer getting started guide</a>.</p>"
                     },
                     {
                         "name": "verbose",
@@ -17,53 +17,28 @@
                         "value": "false"
                     },
                     {
-                        "type": "label",
-                        "text": "Hue lights have a brightness range of 1-254. The Brightness Step determines how much Mycroft should turn the lights up or down when you ask him to adjust the brightness of your lights."
-                    },
-                    {
                         "name": "brightness_step",
                         "type": "number",
                         "label": "Brightness Step",
                         "value": 50
                     },
                     {
-                        "type": "label",
-                        "text": "The Color Temperature Step is similar to the Brightness Step, except that is controls how much of an adjustment Mycroft will make to the color temperature of your lights (redness vs white/blueness). The complete range of color temperatures is from 2000 to 6500 (measure in degrees Kelvin)."
-                    },
-                    {
                         "name": "color_temperature_step",
                         "type": "number",
-                        "label": "Brightness Step",
+                        "label": "Color Temperature Step",
                         "value": 1000
-                    },
-                    {
-                        "type": "label",
-                        "text" : "Mycroft supports Hue groups, allowing you to request that he turn on/off, say the lights in your kitchen, or your bedroom, without changing any other lights. This value determines which group Mycroft will act on by default, when you do not specify a group in your command. The default, 0, is all of your lights."
                     },
                     {
                         "name": "default_group",
                         "type": "number",
                         "label": "Default Group",
                         "value": 0
-                    }
-                ]
-            },
-            {
-                "name": "Connection",
-                "fields": [
-                    {
-                        "type": "label",
-                        "label": "This field is optional. If it is left blank, Mycroft should automatically discover the Phillips Hue hub on your network. If he has any trouble locating the bridge, however, you can enter the IP address of your hub here."
                     },
                     {
                         "name": "ip",
                         "type": "text",
                         "label": "Hub IP Address",
                         "value": ""
-                    },
-                    {
-                        "type": "label",
-                        "label": "This field is optional, and generally doesn't need to be set. Whenever you connect a new application to your Hue hub (i.e. whenever you're instructed to push the button on top of the hub), a unique 'username' (random string of letters/numbers) is generated for that app. The app then uses that value to identify itself going forward. Mycroft is no different, and will ask you to press the button on the bridge on first setup, and should work just fine from then on. If you're a developer, however, and are frequently flashing your Mycroft device with new images, youmay get sick of having to register with the bridge over and over. In that case, you may enter a value here. You can use the value Mycroft generates on your first setup (should be found in <i>~mycroft/.mycroft/skills/PhillipsHueSkill/username</i>), or you can generate your own by following the <a href=https://www.developers.meethue.com/documentation/getting-started>meethue developer getting started guide</a>."
                     },
                     {
                         "name": "username",
