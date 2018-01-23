@@ -42,11 +42,11 @@
                     {
                         "type": "label",
                         "name": "default_group_label",
-                        "label": "<u>Default Group</u><p>Mycroft supports Hue groups, allowing you to request that he adjust a particular set of lights (e.g. those in your kitchen or bedroom), without changing any other lights. This value determines which group Mycroft will act on by default, when you do not specify a group in your command. The default, 0, is all of your lights.</p>"
+                        "label": "<u>Default Group</u><p>Mycroft supports Hue groups, allowing you to request that he adjust a particular set of lights (e.g. those in your kitchen or bedroom), without changing any other lights. This value determines which group Mycroft will act on by default, when you do not specify a group in your command. The default, 0, is all of your lights. You can use either the name of the skill (e.g. \"kitchen\") or it's id (e.g. \"4\").</p>"
                     },
                     {
                         "name": "default_group",
-                        "type": "number",
+                        "type": "text",
                         "label": "Default Group",
                         "value": 0
                     }
