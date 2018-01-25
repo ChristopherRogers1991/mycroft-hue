@@ -95,11 +95,11 @@ class PhillipsHueSkill(MycroftSkill):
 
     def __init__(self):
         super(PhillipsHueSkill, self).__init__(name="PhillipsHueSkill")
-        self.brightness_step = int(self.config.get('brightness_step'))
+        self.brightness_step = int(self.settings.get('brightness_step'))
         self.color_temperature_step = \
-            int(self.config.get('color_temperature_step'))
-        self.verbose = self.config.get('verbose', False)
-        self.username = self.config.get('username')
+            int(self.settings.get('color_temperature_step'))
+        self.verbose = self.settings.get('verbose', False)
+        self.username = self.settings.get('username')
         if self.username == '':
             self.username = None
         self.ip = None  # set in _connect_to_bridge
@@ -115,11 +115,11 @@ class PhillipsHueSkill(MycroftSkill):
 
     @property
     def user_supplied_ip(self):
-        return self.config.get('ip') != ''
+        return self.settings.get('ip') != ''
 
     @property
     def user_supplied_username(self):
-        return self.config.get('username') != ''
+        return self.settings.get('username') != ''
 
     def _register_with_bridge(self):
         """
@@ -155,7 +155,7 @@ class PhillipsHueSkill(MycroftSkill):
             conf_file.write(self.username)
 
         if not self.default_group:
-            self._set_default_group(self.config.get('default_group'))
+            self._set_default_group(self.settings.get('default_group'))
 
         self._register_groups_and_scenes()
 
@@ -170,7 +170,7 @@ class PhillipsHueSkill(MycroftSkill):
             If self.username is not None, and is not registered with the bridge
         """
         if self.user_supplied_ip:
-            self.ip = self.config.get('ip')
+            self.ip = self.settings.get('ip')
         else:
             self.ip = _discover_bridge()
         if self.username:
