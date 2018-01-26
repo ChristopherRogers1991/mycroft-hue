@@ -1,1 +1,1 @@
--e git+https://github.com/studioimaginaire/phue@00c85d8ce9790d7cc794d277af2d153c92c6009c#egg=phue
+phue==1.0
