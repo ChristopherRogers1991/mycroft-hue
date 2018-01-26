@@ -1,1 +1,1 @@
--e git+https://github.com/ChristopherRogers1991/phue@69d00bfde63b7364a696f1a6a2e7401d5272a62d#egg=phue
+-e git+https://github.com/studioimaginaire/phue@00c85d8ce9790d7cc794d277af2d153c92c6009c#egg=phue

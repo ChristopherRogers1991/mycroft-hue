@@ -388,7 +388,7 @@ class PhillipsHueSkill(MycroftSkill):
             if self.verbose:
                 self.speak_dialog('activate.scene',
                                   {'scene': scene_name})
-            self.bridge.activate_scene(scene_id, group.group_id)
+            self.bridge.activate_scene(group.group_id, scene_id)
         else:
             self.speak_dialog('scene.not.found',
                               {'scene': scene_name})
