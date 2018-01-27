@@ -256,7 +256,7 @@ class PhillipsHueSkill(MycroftSkill):
         except LookupError:
             self.speak_dialog('could.not.find.group', {'name': identifier})
             self.speak_dialog('using.group.0')
-        self.default_group = Group(self.bridge, 0)
+            self.default_group = Group(self.bridge, 0)
 
     def _register_groups_and_scenes(self):
         """
