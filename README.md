@@ -23,6 +23,8 @@ You can install this skill by running: `msm install hue`.
 
 ## Configuration
 
+*Note:* You may need to restart Mycroft (or at least the skills service), for configuration changes to take effect.
+
 If you need to adjust any settings of this skill, you can do so at https://home.mycroft.ai/#/skill. Alternatively:
 
 Add the block below to your mycoft.conf file (`~/.mycroft/mycroft.conf`), and make any necessary adjustments there.
