@@ -66,7 +66,8 @@ def intent_handler(handler_function):
                 or self.connected or self._connect_to_bridge():
             group = self.default_group
             if "Group" in message.data:
-                name = message.data["Group"].lower()
+                name = message.data.get("Group") or self.most_recent_group
+                name = name.lower()
                 group_id = self.groups_to_ids_map[name]
                 group = Group(self.bridge, group_id)
             try:
@@ -84,6 +85,9 @@ def intent_handler(handler_function):
                             self.handle_intent(message)
                 else:
                     raise
+
+        self._update_context(message)
+
     return handler
 
 
@@ -91,16 +95,17 @@ class PhillipsHueSkill(MycroftSkill):
 
     def __init__(self):
         super(PhillipsHueSkill, self).__init__(name="PhillipsHueSkill")
-        self.brightness_step = int(self.config.get('brightness_step'))
+        self.brightness_step = int(self.settings.get('brightness_step'))
         self.color_temperature_step = \
-            int(self.config.get('color_temperature_step'))
-        self.verbose = self.config.get('verbose', False)
-        self.username = self.config.get('username')
+            int(self.settings.get('color_temperature_step'))
+        self.verbose = self.settings.get('verbose', False)
+        self.username = self.settings.get('username')
         if self.username == '':
             self.username = None
         self.ip = None  # set in _connect_to_bridge
         self.bridge = None
         self.default_group = None
+        self.most_recent_group = None
         self.groups_to_ids_map = dict()
         self.scenes_to_ids_map = dict()
 
@@ -110,11 +115,11 @@ class PhillipsHueSkill(MycroftSkill):
 
     @property
     def user_supplied_ip(self):
-        return self.config.get('ip') != ''
+        return self.settings.get('ip') != ''
 
     @property
     def user_supplied_username(self):
-        return self.config.get('username') != ''
+        return self.settings.get('username') != ''
 
     def _register_with_bridge(self):
         """
@@ -150,7 +155,7 @@ class PhillipsHueSkill(MycroftSkill):
             conf_file.write(self.username)
 
         if not self.default_group:
-            self._set_default_group(self.config.get('default_group'))
+            self._set_default_group(self.settings.get('default_group'))
 
         self._register_groups_and_scenes()
 
@@ -165,7 +170,7 @@ class PhillipsHueSkill(MycroftSkill):
             If self.username is not None, and is not registered with the bridge
         """
         if self.user_supplied_ip:
-            self.ip = self.config.get('ip')
+            self.ip = self.settings.get('ip')
         else:
             self.ip = _discover_bridge()
         if self.username:
@@ -275,6 +280,27 @@ class PhillipsHueSkill(MycroftSkill):
             self.scenes_to_ids_map[name] = id
             self.register_vocabulary(name, "Scene")
 
+    def _update_context(self, message):
+        """
+        Update the context to allow for conversational interaction,
+        e.g.
+        "Turn on my lamp"
+        "Set it to reading"
+
+        Parameters
+        ----------
+        message : mycroft-core.messagebus.message.Message
+
+        """
+        data = message.data
+        if "LightsKeyword" in data:
+            self.set_context("LightsKeyword",
+                             data["LightsKeyword"] or "Lights")
+        elif "Group" in message.data:
+            self.most_recent_group =\
+                message.data.get("Group") or self.most_recent_group
+            self.set_context("Group", self.most_recent_group)
+
     def initialize(self):
         """
         Attempt to connect to the bridge,
@@ -362,7 +388,7 @@ class PhillipsHueSkill(MycroftSkill):
             if self.verbose:
                 self.speak_dialog('activate.scene',
                                   {'scene': scene_name})
-            self.bridge.activate_scene(scene_id, group.group_id)
+            self.bridge.activate_scene(group.group_id, scene_id)
         else:
             self.speak_dialog('scene.not.found',
                               {'scene': scene_name})

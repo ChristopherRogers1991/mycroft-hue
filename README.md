@@ -4,7 +4,13 @@ A Mycroft skill for controlling Phillips Hue lights
 ## Short Demo
 https://youtu.be/IQ58dPp8f3M
 
-## Setup
+## Instalation
+
+### MSM
+
+You can install this skill by running: `msm install hue`.
+
+### Manual install
 
 1. Clone this repo into your third party skills folder (the current default is ~/.mycroft/skills, but it used to be ~/.mycroft/third_party_skills; check your global/local mycroft.conf files if you have issues)
   * `cd ~/.mycroft/skills && git clone https://github.com/ChristopherRogers1991/mycroft-hue.git`
@@ -14,7 +20,14 @@ https://youtu.be/IQ58dPp8f3M
   * `source ~/.virtualenvs/mycroft/bin/activate`
 4. Install the required python libraries
   * `pip install -r requirements.txt`
-5. Add the block below to your mycoft.conf file (`~/.mycroft/mycroft.conf`)
+
+## Configuration
+
+*Note:* You may need to restart Mycroft (or at least the skills service), for configuration changes to take effect.
+
+If you need to adjust any settings of this skill, you can do so at https://home.mycroft.ai/#/skill. Alternatively:
+
+Add the block below to your mycoft.conf file (`~/.mycroft/mycroft.conf`), and make any necessary adjustments there.
 ```
   "PhillipsHueSkill": {
     "ip": "",

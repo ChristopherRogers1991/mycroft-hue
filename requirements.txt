@@ -1,1 +1,1 @@
--e git+https://github.com/ChristopherRogers1991/phue@69d00bfde63b7364a696f1a6a2e7401d5272a62d#egg=phue
+phue==1.0
