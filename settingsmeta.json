@@ -15,7 +15,7 @@
 		    {
 			"type": "label",
 			"name": "verbose_label",
-			"label": "<p>If you'd like Mycroft to give a verbal confirmation after you give him a command related to your Philip's Hue lights, set 'Verbose' to 'true'</p>"
+			"label": "<p>If you'd like Mycroft to give a verbal confirmation after you give him a command related to your Philip's Hue lights, check the 'Verbose' box.</p>"
                     },
                     {
                         "name": "brightness_step",
@@ -37,7 +37,7 @@
                     {
                         "type": "label",
                         "name": "color_temperature_step_label",
-                        "label": "<p>The Color Temperature Step is similar to the Brightness Step, except that is controls how much of an adjustment Mycroft will make to the color temperature of your lights (redness vs white/blueness). The complete range of color temperatures is from 2000 to 6500 (measured in degrees Kelvin).</p>"
+                        "label": "<p>The Color Temperature Step is similar to the Brightness Step, except that it controls how much of an adjustment Mycroft will make to the color temperature of your lights (redness vs white/blueness). The complete range of color temperatures is from 2000 to 6500 (measured in degrees Kelvin).</p>"
                     },
                     {
                         "name": "default_group",
@@ -48,7 +48,7 @@
                     {
                         "type": "label",
                         "name": "default_group_label",
-                        "label": "<p>Mycroft supports Hue groups, allowing you to request that he adjust a particular set of lights (e.g. those in your kitchen or bedroom), without changing any other lights. This value determines which group Mycroft will act on by default, when you do not specify a group in your command. The default, 0, is all of your lights. You can use either the name of the group (e.g. \"kitchen\") or it's id (e.g. \"4\").</p>"
+                        "label": "<p>Mycroft supports Hue groups, allowing you to request that he adjust a particular set of lights (e.g. those in your kitchen or bedroom), without changing any other lights. The Default Group value determines which group Mycroft will act on by default, when you do not specify a group in your command. The default, 0, is all of your lights. You can use either the name of the group (e.g. \"kitchen\") or it's id (e.g. \"4\").</p>"
                     }
                 ]
             },
