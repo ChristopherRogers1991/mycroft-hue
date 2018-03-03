@@ -388,7 +388,7 @@ class PhillipsHueSkill(MycroftSkill):
         group.brightness = brightness
         group.on = True
         if self.verbose:
-            self.speak_dialog('set.brightness', {'brightness': brightness})
+            self.speak_dialog('set.brightness', {'brightness': value})
 
     @intent_handler
     def handle_adjust_color_temperature_intent(self, message, group):
