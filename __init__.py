@@ -385,8 +385,8 @@ class PhillipsHueSkill(MycroftSkill):
     def handle_set_brightness_intent(self, message, group):
         value = int(message.data['Value'].rstrip('%'))
         brightness = int(value / 100.0 * 254)
-        group.brightness = brightness
         group.on = True
+        group.brightness = brightness
         if self.verbose:
             self.speak_dialog('set.brightness', {'brightness': value})
 
