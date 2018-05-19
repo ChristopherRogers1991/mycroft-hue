@@ -264,13 +264,13 @@ class PhillipsHueSkill(MycroftSkill):
         and update our caches.
         """
         groups = self.bridge.get_group()
-        for id, group in groups.iteritems():
+        for id, group in groups.items():
             name = group['name'].lower()
             self.groups_to_ids_map[name] = id
             self.register_vocabulary(name, "Group")
 
         scenes = self.bridge.get_scene()
-        for id, scene in scenes.iteritems():
+        for id, scene in scenes.items():
             name = scene['name'].lower()
             self.scenes_to_ids_map[name] = id
             self.register_vocabulary(name, "Scene")
