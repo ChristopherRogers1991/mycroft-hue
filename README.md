@@ -1,5 +1,18 @@
-# mycroft-hue
-A Mycroft skill for controlling Phillips Hue lights
+## Mycroft Hue
+Control Phillips Hue Lights
+
+## Description 
+Turn your Phillips Hue lights on/off, activate scenes, adjust brightness/color temperature, etc.
+
+## Examples 
+* "Turn on my lights"
+* "Set my lights to tropical twilight"
+* "Turn the lights down"
+* "Decrease the color temperature of the lights"
+
+## Credits 
+@ChristopherRogers1991
+@WillJMurphy
 
 ## Short Demo
 https://youtu.be/IQ58dPp8f3M
