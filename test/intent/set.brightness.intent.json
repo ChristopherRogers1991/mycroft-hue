@@ -1,8 +1,0 @@
-{
-  "utterance": "Lights to 50%",
-  "intent_type": "SetBrightnessIntent",
-  "intent": {
-    "Value": "50",
-    "LightsKeyword": "lights"
-  }
-}
