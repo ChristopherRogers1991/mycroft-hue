@@ -1,5 +1,5 @@
 {
-  "utterance": "Lights to 50",
+  "utterance": "Lights to 50%",
   "intent_type": "SetBrightnessIntent",
   "intent": {
     "Value": "50",
