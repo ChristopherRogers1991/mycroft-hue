@@ -36,6 +36,10 @@ __author__ = 'ChristopherRogers1991'
 LOGGER = getLogger(__name__)
 
 
+DEFAULT_BRIGHTNESS_STEP = 50
+DEFAULT_COLOR_TEMPERATURE_STEP = 1000
+
+
 class DeviceNotFoundException(Exception):
     pass
 
@@ -91,9 +95,11 @@ class PhillipsHueSkill(MycroftSkill):
 
     def __init__(self):
         super(PhillipsHueSkill, self).__init__(name="PhillipsHueSkill")
-        self.brightness_step = int(self.settings.get('brightness_step'))
+        self.brightness_step = int(self.settings.get('brightness_step',
+                                                     DEFAULT_BRIGHTNESS_STEP))
         self.color_temperature_step = \
-            int(self.settings.get('color_temperature_step'))
+            int(self.settings.get('color_temperature_step',
+                                  DEFAULT_COLOR_TEMPERATURE_STEP))
         self.verbose = self.settings.get('verbose', False)
         self.username = self.settings.get('username')
         if self.username == '':
