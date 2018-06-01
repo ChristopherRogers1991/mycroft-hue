@@ -11,8 +11,9 @@ Turn your Phillips Hue lights on/off, activate scenes, adjust brightness/color t
 * "Decrease the color temperature of the lights"
 
 ## Credits 
-@ChristopherRogers1991
-@WillJMurphy
+* @ChristopherRogers1991
+* @WillJMurphy
+* @gras64
 
 ## Short Demo
 https://youtu.be/IQ58dPp8f3M
