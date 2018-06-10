@@ -455,7 +455,7 @@ def _discover_bridge():
     sock.settimeout(5.0)
     sock.sendto(ssdpRequest.encode(), (SSDP_ADDR, SSDP_PORT))
     try:
-        result = sock.recv(4096)
+        result = sock.recv(4096).decode()
         lines = result.splitlines()
         for i in range(len(lines)):
             if lines[i].startswith('hue-bridgeid'):
