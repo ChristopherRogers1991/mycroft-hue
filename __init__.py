@@ -453,7 +453,7 @@ def _discover_bridge():
                   "ST: %s\r\n" % (SSDP_ST,) + "\r\n"
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(5.0)
-    sock.sendto(ssdpRequest, (SSDP_ADDR, SSDP_PORT))
+    sock.sendto(ssdpRequest.encode(), (SSDP_ADDR, SSDP_PORT))
     try:
         result = sock.recv(4096)
         lines = result.splitlines()
