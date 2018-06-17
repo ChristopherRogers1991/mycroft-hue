@@ -100,10 +100,17 @@ class PhillipsHueSkill(MycroftSkill):
         self.color_temperature_step = \
             int(self.settings.get('color_temperature_step',
                                   DEFAULT_COLOR_TEMPERATURE_STEP))
-        self.verbose = self.settings.get('verbose', False)
+
+        verbose = self.settings.get('verbose', False)
+        if type(self.verbose) == str:
+            verbose = verbose.lower()
+            verbose = True if verbose == 'true' else False
+        self.verbose = verbose
+
         self.username = self.settings.get('username')
         if self.username == '':
             self.username = None
+
         self.ip = None  # set in _connect_to_bridge
         self.bridge = None
         self.default_group = None
