@@ -102,7 +102,7 @@ class PhillipsHueSkill(MycroftSkill):
                                   DEFAULT_COLOR_TEMPERATURE_STEP))
 
         verbose = self.settings.get('verbose', False)
-        if type(self.verbose) == str:
+        if type(verbose) == str:
             verbose = verbose.lower()
             verbose = True if verbose == 'true' else False
         self.verbose = verbose
