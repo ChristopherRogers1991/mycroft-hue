@@ -118,7 +118,7 @@ class PhillipsHueSkill(MycroftSkill):
         self.default_group = None
         self.groups_to_ids_map = dict()
         self.scenes_to_ids_map = dict()
-        self.colors_to_cie_color_map = self._map_colors_to_cie_colors()
+        self.colors_to_cie_color_map = self._map_colors_to_cie_colors(os.path.join(os.path.dirname(os.path.realpath(__file__)), "colors"))
 
     @property
     def connected(self):
@@ -360,7 +360,6 @@ class PhillipsHueSkill(MycroftSkill):
         self.register_intent(connect_lights_intent,
                              self.handle_connect_lights_intent)
 
-        #TODO: .require("Color") if registration issues solved
         change_color_intent = \
             IntentBuilder("ChangeLightColorIntent") \
             .require("ColorKeyword") \
@@ -445,26 +444,45 @@ class PhillipsHueSkill(MycroftSkill):
     
     @intent_handler
     def handle_change_color_intent(self, message, group):
-        if "Color" in message.data and message.data["Color"] in self.colors_to_cie_color_map:
+        if message.data["Color"] in self.colors_to_cie_color_map:
             group.xy = self.colors_to_cie_color_map[message.data["Color"]]
+            dialog = "change.color"
+        else:
+            dialog = "color.not.found"
+        
+        if self.verbose:
+            self.speak_dialog(dialog, { "color": message.data["Color"] })
 
     def stop(self):
         pass
 
-    def _map_colors_to_cie_colors(self):
+    def _map_colors_to_cie_colors(self, color_files_directory_path):
         cie_colors_map = dict()
         try:
-            colors_json = json.load(open(self._get_color_file_path()))
-            for color_name, rgb_values in colors_json.items():
-                cie_colors_map[color_name] = self._rgb_to_cie(rgb_values[0], rgb_values[1], rgb_values[2])
+            colors_json = json.load(open(os.path.join(color_files_directory_path, "color-definitions.json")))
+
+            if self.lang.startswith("en"):
+                for color_name, rgb_values in colors_json.items():
+                    cie_colors_map[color_name] = self._rgb_to_cie(rgb_values[0], rgb_values[1], rgb_values[2])
+            else:
+                color_mapping = json.load(open(self._get_color_file_path(color_files_directory_path)))
+                for foreign_color_name, english_color_name in color_mapping.items():
+                    if english_color_name in colors_json:
+                        rgb_values = colors_json[english_color_name]
+                        cie_colors_map[foreign_color_name] = self._rgb_to_cie(rgb_values[0], rgb_values[1], rgb_values[2])
+
         except Exception as e:
             LOGGER.error(e)
         return cie_colors_map
 
-    def _get_color_file_path(self):
-        color_files_directory_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "colors")
-        return os.path.join(color_files_directory_path, self.lang.split("-")[0] + "-colors.json")
+    def _get_color_file_path(self, color_files_directory_path):
+        file_path = os.path.join(color_files_directory_path, self.lang.split("-")[0] + "-colors.json")
+        return file_path if os.path.isfile(file_path) else ""
 
+    
+    def _register_colors(self):
+        for color_name in self.colors_to_cie_color_map:
+            self.register_vocabulary(color_name, "Color")
 
     """
     This function is based on the project https://github.com/usolved/cie-rgb-converter which is licensed under MIT license.
@@ -504,12 +522,6 @@ class PhillipsHueSkill(MycroftSkill):
         y = round((Y / (X + Y + Z)), 4)
 
         return [x, y]
-    
-    def _register_colors(self):
-        for color_name in self.colors_to_cie_color_map:
-            self.register_vocabulary(color_name, "Color")
-
-
 
 
 def _discover_bridge():
