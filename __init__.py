@@ -29,6 +29,8 @@ from time import sleep
 from requests import ConnectionError
 from requests import get
 
+import os
+import json
 import socket
 
 __author__ = 'ChristopherRogers1991'
@@ -116,6 +118,7 @@ class PhillipsHueSkill(MycroftSkill):
         self.default_group = None
         self.groups_to_ids_map = dict()
         self.scenes_to_ids_map = dict()
+        self.colors_to_cie_color_map = self._map_colors_to_cie_colors(os.path.join(os.path.dirname(os.path.realpath(__file__)), "colors"))
 
     @property
     def connected(self):
@@ -166,6 +169,7 @@ class PhillipsHueSkill(MycroftSkill):
             self._set_default_group(self.settings.get('default_group'))
 
         self._register_groups_and_scenes()
+        self._register_colors()
 
     def _attempt_connection(self):
         """
@@ -356,6 +360,15 @@ class PhillipsHueSkill(MycroftSkill):
         self.register_intent(connect_lights_intent,
                              self.handle_connect_lights_intent)
 
+        change_color_intent = \
+            IntentBuilder("ChangeLightColorIntent") \
+            .require("ColorKeyword") \
+            .require("Color") \
+            .one_of("Group", "LightsKeyword") \
+            .build()
+        self.register_intent(change_color_intent,
+                             self.handle_change_color_intent)
+
     @intent_handler
     def handle_toggle_intent(self, message, group):
         if "OffKeyword" in message.data:
@@ -428,9 +441,87 @@ class PhillipsHueSkill(MycroftSkill):
         if self.verbose:
             self.speak_dialog('connecting')
         self._connect_to_bridge(acknowledge_successful_connection=True)
+    
+    @intent_handler
+    def handle_change_color_intent(self, message, group):
+        if message.data["Color"] in self.colors_to_cie_color_map:
+            group.xy = self.colors_to_cie_color_map[message.data["Color"]]
+            dialog = "change.color"
+        else:
+            dialog = "color.not.found"
+        
+        if self.verbose:
+            self.speak_dialog(dialog, { "color": message.data["Color"] })
 
     def stop(self):
         pass
+
+    def _map_colors_to_cie_colors(self, color_files_directory_path):
+        cie_colors_map = dict()
+        try:
+            colors_json = json.load(open(os.path.join(color_files_directory_path, "color-definitions.json")))
+
+            if self.lang.startswith("en"):
+                for color_name, rgb_values in colors_json.items():
+                    cie_colors_map[color_name] = self._rgb_to_cie(rgb_values[0], rgb_values[1], rgb_values[2])
+            else:
+                color_mapping = json.load(open(self._get_color_file_path(color_files_directory_path)))
+                for foreign_color_name, english_color_name in color_mapping.items():
+                    if english_color_name in colors_json:
+                        rgb_values = colors_json[english_color_name]
+                        cie_colors_map[foreign_color_name] = self._rgb_to_cie(rgb_values[0], rgb_values[1], rgb_values[2])
+
+        except Exception as e:
+            LOGGER.error(e)
+        return cie_colors_map
+
+    def _get_color_file_path(self, color_files_directory_path):
+        file_path = os.path.join(color_files_directory_path, self.lang.split("-")[0] + "-colors.json")
+        return file_path if os.path.isfile(file_path) else ""
+
+    
+    def _register_colors(self):
+        for color_name in self.colors_to_cie_color_map:
+            self.register_vocabulary(color_name, "Color")
+
+    """
+    This function is based on the project https://github.com/usolved/cie-rgb-converter which is licensed under MIT license.
+
+    MIT License
+
+    Copyright (c) 2017 www.usolved.net
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    """
+    def _rgb_to_cie(self, red, green, blue):
+        red = pow((red + 0.055) / (1.0 + 0.055), 2.4) if (red > 0.04045) else (red / 12.92)
+        green = pow((green + 0.055) / (1.0 + 0.055), 2.4) if (green > 0.04045) else (green / 12.92)
+        blue = pow((blue + 0.055) / (1.0 + 0.055), 2.4) if (blue > 0.04045) else (blue / 12.92)
+
+        X = red * 0.664511 + green * 0.154324 + blue * 0.162028
+        Y = red * 0.283881 + green * 0.668433 + blue * 0.047685
+        Z = red * 0.000088 + green * 0.072310 + blue * 0.986039
+
+        x = round((X / (X + Y + Z)), 4)
+        y = round((Y / (X + Y + Z)), 4)
+
+        return [x, y]
 
 
 def _discover_bridge():
