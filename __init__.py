@@ -364,6 +364,7 @@ class PhillipsHueSkill(MycroftSkill):
         change_color_intent = \
             IntentBuilder("ChangeLightColorIntent") \
             .require("ColorKeyword") \
+            .require("Color") \
             .one_of("Group", "LightsKeyword") \
             .build()
         self.register_intent(change_color_intent,
@@ -444,9 +445,8 @@ class PhillipsHueSkill(MycroftSkill):
     
     @intent_handler
     def handle_change_color_intent(self, message, group):
-        #if "Color" in message.data and message.data["Color"] in self.colors_to_cie_color_map:
-        #    group.xy = self.colors_to_cie_color_map[message.data["Color"]]
-        group.xy = self.colors_to_cie_color_map["red"]
+        if "Color" in message.data and message.data["Color"] in self.colors_to_cie_color_map:
+            group.xy = self.colors_to_cie_color_map[message.data["Color"]]
 
     def stop(self):
         pass
