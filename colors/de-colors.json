@@ -1,5 +1,11 @@
 {
+    "weiß": "white",
     "rot": "red",
     "grün": "green",
-    "blau": "blue"
+    "blau": "blue",
+    "gelb": "yellow",
+    "orange": "orange",
+    "dunkelorange": "dark orange",
+    "violett": "purple",
+    "pink": "pink"
 }
