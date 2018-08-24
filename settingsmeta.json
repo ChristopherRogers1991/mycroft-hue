@@ -77,11 +77,6 @@
                         "type": "label",
                         "name": "username_label",
                         "label": "<p>This field is optional, and generally doesn't need to be set. Whenever you connect a new application to your Hue hub (i.e. whenever you're instructed to push the button on top of the hub), a unique 'username' (random string of letters/numbers) is generated for that app. The app then uses that value to identify itself going forward. Mycroft is no different, and will ask you to press the button on the bridge on first setup, and should work just fine from then on. If you're a developer, however, and are frequently flashing your Mycroft device with new images, you may get sick of having to register with the bridge over and over. In that case, you may enter a username here. You can use the value Mycroft generates on your first setup (should be found in <i>~mycroft/.mycroft/skills/PhillipsHueSkill/username</i>), or you can generate your own by following the <a href=https://www.developers.meethue.com/documentation/getting-started>meethue developer getting started guide</a>.</p>"
-                    },
-                    {
-                        "name": "color_mappings",
-                        "type": "text",
-                        "value": ""
                     }
                 ]
             }

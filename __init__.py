@@ -29,6 +29,7 @@ from time import sleep
 from requests import ConnectionError
 from requests import get
 
+import os
 import json
 import socket
 
@@ -453,12 +454,17 @@ class PhillipsHueSkill(MycroftSkill):
     def _map_colors_to_cie_colors(self):
         cie_colors_map = dict()
         try:
-            colors_json = json.loads(self.settings.get("color_mappings", ""))
+            colors_json = json.load(open(self._get_color_file_path()))
             for color_name, rgb_values in colors_json.items():
                 cie_colors_map[color_name] = self._rgb_to_cie(rgb_values[0], rgb_values[1], rgb_values[2])
         except Exception as e:
             LOGGER.error(e)
         return cie_colors_map
+
+    def _get_color_file_path(self):
+        color_files_directory_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "colors")
+        return os.path.join(color_files_directory_path, self.lang.split("-")[0] + "-colors.json")
+
 
     """
     This function is based on the project https://github.com/usolved/cie-rgb-converter which is licensed under MIT license.
