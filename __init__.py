@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from adapt.intent import IntentBuilder
+from collections import defaultdict
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
 from os.path import dirname
@@ -115,7 +116,7 @@ class PhillipsHueSkill(MycroftSkill):
         self.bridge = None
         self.default_group = None
         self.groups_to_ids_map = dict()
-        self.scenes_to_ids_map = dict()
+        self.scenes_to_ids_map = defaultdict(dict)
 
     @property
     def connected(self):
@@ -285,7 +286,9 @@ class PhillipsHueSkill(MycroftSkill):
         scenes = self.bridge.get_scene()
         for id, scene in scenes.items():
             name = scene['name'].lower()
-            self.scenes_to_ids_map[name] = id
+            group_id = scene.get('group')
+            group_id = int(group_id) if group_id else None
+            self.scenes_to_ids_map[group_id][name] = id
             self.register_vocabulary(name, "Scene")
 
     def initialize(self):
@@ -370,7 +373,9 @@ class PhillipsHueSkill(MycroftSkill):
     @intent_handler
     def handle_activate_scene_intent(self, message, group):
         scene_name = message.data['Scene'].lower()
-        scene_id = self.scenes_to_ids_map[scene_name]
+        scene_id = self.scenes_to_ids_map[group.group_id].get(scene_name)
+        if not scene_id:
+            scene_id = self.scenes_to_ids_map[None].get(scene_name)
         if scene_id:
             if self.verbose:
                 self.speak_dialog('activate.scene',
