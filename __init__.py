@@ -21,6 +21,7 @@ from adapt.intent import IntentBuilder
 from collections import defaultdict
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
+from mycroft.messagebus.message import Message
 from os.path import dirname
 from phue import Bridge
 from phue import Group
@@ -66,8 +67,8 @@ def intent_handler(handler_function):
     callable
 
     """
-    def handler(self, message):
-        if message.type == 'ConnectLightsIntent' \
+    def handler(self, message: Message):
+        if message.msg_type == 'ConnectLightsIntent' \
                 or self.connected or self._connect_to_bridge():
             group = self.default_group
             if "Group" in message.data:
