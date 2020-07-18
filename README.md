@@ -14,6 +14,8 @@ Turn your Phillips Hue lights on/off, activate scenes, adjust brightness/color t
 * @ChristopherRogers1991
 * @WillJMurphy
 * @gras64
+* @VilterPD
+
 
 ## Short Demo
 https://youtu.be/IQ58dPp8f3M
