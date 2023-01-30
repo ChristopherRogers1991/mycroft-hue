@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from adapt.intent import IntentBuilder
+from json import dumps
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
 from os.path import dirname
@@ -25,9 +26,9 @@ from phue import Bridge
 from phue import Group
 from phue import PhueRegistrationException
 from phue import PhueRequestTimeout
-from time import sleep
 from requests import ConnectionError
 from requests import get
+from time import sleep
 
 import socket
 
@@ -390,6 +391,8 @@ class PhillipsHueSkill(MycroftSkill):
                                   {'scene': scene_name})
             self.bridge.activate_scene(scene_id, group.group_id)
         else:
+            LOGGER.debug("Scene name was `{scene_name}`; available scenes are {scenes}"
+                         .format(scene_name=scene_name, scenes=dumps(self.scenes_to_ids_map)))
             self.speak_dialog('scene.not.found',
                               {'scene': scene_name})
 
